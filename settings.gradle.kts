@@ -24,4 +24,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "MyAndroidPlayground"
 include(":app")
- 
+// settings.gradle.kts
+include(":feature:todolist")
+project(":feature:todolist").projectDir = file("feature/todolist")

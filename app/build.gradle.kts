@@ -53,4 +53,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    implementation(libs.material.icons.extended)
+
+    //모듈 추가
+    implementation(project(":feature:todolist"))
+
 }

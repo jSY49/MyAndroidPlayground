@@ -2,13 +2,19 @@ package com.example.todolist.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.MutatePriority
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -23,14 +29,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.todolist.Util.toColor
+import com.example.todolist.Util.toTimeString
+import com.example.todolist.model.Priority
 import com.example.todolist.ui.theme.MyAndroidPlaygroundTheme
+import com.example.todolist.ui.theme.item_bg
+import com.example.todolist.ui.theme.sub_title_color
+import com.example.todolist.ui.theme.title_color
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Composable
 fun TodoItem(
     title: String,
+    dueDateTime: LocalDateTime,
+    priority: Priority,
     isDone: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     onDelete: () -> Unit,
@@ -46,61 +65,77 @@ fun TodoItem(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+//            .background(item_bg)  //surface는 color속성으로 배경 색상 변경
+        ,
         shape = RoundedCornerShape(16.dp),
-//        tonalElevation = 1.dp
+        color = item_bg
     ) {
         Row(
             modifier = modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 16.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
+
+            CustomCheckBox(
                 checked = isDone,
                 onCheckedChange = onCheckedChange,
-                colors = CheckboxDefaults.colors(
-                    checkedColor = MaterialTheme.colorScheme.primary,
-                    uncheckedColor = MaterialTheme.colorScheme.outline
-                )
             )
 
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    textDecoration = if (isDone) TextDecoration.LineThrough else TextDecoration.None,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = alpha)  // copy(alpha = alpha) : 색상은 그대로 투명도만 바꾸기
-                ),
+            Column(
                 modifier = Modifier.weight(1f),
-//                textAlign = TextAlign.Center
-            )
+            ) {
+                Text(
+                    text = title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = title_color.copy(alpha = if (isDone) 0.5f else 1f),
+                        textDecoration = if (isDone) TextDecoration.LineThrough else TextDecoration.None,
+                    ),
+                )
 
-            IconButton(onClick = onDelete) {
-                Icon(
-                    imageVector = Icons.Default.Delete,
-                    contentDescription = "삭제",
-                    tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f)
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "${dueDateTime.toTimeString()} · 우선순위 ${priority.label}",
+                    fontSize = 13.sp,
+                    color = sub_title_color.copy(alpha = 0.6f),
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
+
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(priority.toColor())
+            )
         }
     }
 }
 
-@Preview
+@Preview(showBackground = true , )
 @Composable
 fun TodoItemPreview() {
     MyAndroidPlaygroundTheme {
         Column {
             TodoItem(
                 title = "장보기",
+                priority = Priority.HIGH,
+                dueDateTime = LocalDateTime.now(),
                 isDone = false,
                 onCheckedChange = {},
                 onDelete = {}
             )
             TodoItem(
                 title = "운동하기",
+                priority = Priority.MEDIUM,
+                dueDateTime = LocalDateTime.now(),
                 isDone = true,
                 onCheckedChange = {},
                 onDelete = {}

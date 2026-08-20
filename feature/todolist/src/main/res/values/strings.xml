@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">todolist</string>
+    <string name="todolist_title">오늘 할 일</string>
 </resources>

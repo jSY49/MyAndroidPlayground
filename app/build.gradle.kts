@@ -1,20 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.myandroidplayground"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.myandroidplayground"
         minSdk = 30
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
 
@@ -56,6 +53,11 @@ dependencies {
 
     implementation(libs.material.icons.extended)
 
+    //네비게이션
+    implementation(libs.androidx.navigation.compose)
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
     //모듈 추가
     implementation(project(":feature:todolist"))
 

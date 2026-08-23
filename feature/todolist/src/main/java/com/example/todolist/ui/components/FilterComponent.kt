@@ -30,6 +30,7 @@ fun FilterComponent(
 ) {
 
     Surface(
+        onClick = { onCheckedChange(!checked) },
         border = if(checked) BorderStroke(1.dp , baseBlue) else BorderStroke(1.dp , Color.Gray),
         shape = RoundedCornerShape(50),
         color = if (checked) baseBlue else Color.Transparent

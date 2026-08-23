@@ -56,6 +56,8 @@ dependencies {
 
     implementation(libs.material.icons.extended)
 
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     //모듈 추가
     implementation(project(":feature:todolist"))
 

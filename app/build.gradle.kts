@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.myandroidplayground"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.myandroidplayground"
         minSdk = 30
-        targetSdk = 37
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -53,11 +53,14 @@ dependencies {
 
     implementation(libs.material.icons.extended)
 
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
     //네비게이션
     implementation(libs.androidx.navigation.compose)
 
     //firebase
     implementation(platform("com.google.firebase:firebase-bom:34.18.0"))
+
     //모듈 추가
     implementation(project(":feature:todolist"))
 

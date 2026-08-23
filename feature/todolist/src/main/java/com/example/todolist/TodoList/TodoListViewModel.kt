@@ -68,18 +68,35 @@ class TodoListViewModel : ViewModel() {
         _uiState.update { it.copy(selectedFilter = filter) }
     }
 
-    fun onTodoCheckedChange(id : String , isDone : Boolean){
+    fun onTodoCheckedChange(id: String, isDone: Boolean) {
         _uiState.update { state ->
             state.copy(todos = state.todos.map {
-                if(it.id == id) it.copy(isDone = isDone) else it
+                if (it.id == id) it.copy(isDone = isDone) else it
             })
 
         }
     }
 
-    fun onDelete(id : String) {
-        _uiState.update{ state ->
+    private var lastDeletedTodo: Pair<Todo, Int>? = null
+
+    fun onDelete(id: String) {
+        _uiState.update { state ->
+            val index = state.todos.indexOfFirst { it.id == id }
+            if (index != -1) {
+                lastDeletedTodo = state.todos[index] to index
+            }
             state.copy(todos = state.todos.filterNot { it.id == id })
         }
     }
+
+    fun undoDelete() {
+        val (todo, index) = lastDeletedTodo ?: return
+        _uiState.update { state ->
+            state.copy(todos = state.todos.toMutableList().apply {
+                add(index.coerceIn(0, size), todo)
+            })
+        }
+        lastDeletedTodo = null
+    }
+
 }

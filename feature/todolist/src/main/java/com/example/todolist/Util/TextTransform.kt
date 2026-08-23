@@ -12,6 +12,7 @@ fun LocalDateTime.toDisplayString(): String {
     val datePart = when (this.toLocalDate()) {
         today -> "오늘"
         today.plusDays(1) -> "내일"
+        today.minusDays(1) -> "어제"
         else -> this.format(DateTimeFormatter.ofPattern("M월 d일"))
     }
     val timePart = this.format(DateTimeFormatter.ofPattern("a h:mm", Locale.KOREAN))

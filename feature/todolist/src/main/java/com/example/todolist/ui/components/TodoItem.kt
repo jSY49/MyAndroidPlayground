@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todolist.Util.toColor
+import com.example.todolist.Util.toDisplayString
 import com.example.todolist.Util.toTimeString
 import com.example.todolist.model.Priority
 import com.example.todolist.ui.theme.MyAndroidPlaygroundTheme
@@ -102,7 +103,7 @@ fun TodoItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "${dueDateTime.toTimeString()} · 우선순위 ${priority.label}",
+                    text = "${dueDateTime.toDisplayString()} · 우선순위 ${priority.label}",
                     fontSize = 13.sp,
                     color = sub_title_color.copy(alpha = 0.6f),
                     style = MaterialTheme.typography.bodySmall,

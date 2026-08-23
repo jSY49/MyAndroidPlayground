@@ -12,5 +12,5 @@ data class TodoListUiState(
             TodoState.ALL -> todos
             TodoState.IN_PROGRESS -> todos.filter {!it.isDone }
             TodoState.DONE -> todos.filter { it.isDone }
-        }
+        }.sortedWith(compareBy({ it.isDone }, { it.dueDateTime }))
 }

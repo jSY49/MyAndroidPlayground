@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">todolist</string>
     <string name="todolist_title">오늘 할 일</string>
+    <string name="todolist_add_title">새 할 일 추가</string>
+    <string name="todolist_add_item_placeholder">할 일을 입력하세요.</string>
+    <string name="todolist_add_item_endDate">마감시간</string>
+    <string name="todolist_add_item_priority">우선순위</string>
+    <string name="todolist_add_item_add">추가하기</string>
 </resources>

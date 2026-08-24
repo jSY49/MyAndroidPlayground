@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.selects.select
 import java.time.LocalDateTime
+import java.util.UUID
 
 class TodoListViewModel : ViewModel() {
 
@@ -66,6 +67,20 @@ class TodoListViewModel : ViewModel() {
 
     fun onFilterSelected(filter: TodoState) {
         _uiState.update { it.copy(selectedFilter = filter) }
+    }
+
+    fun addTodo(title: String, dueDateTime: LocalDateTime, priority: Priority) {
+        _uiState.update { state ->
+            state.copy(
+                todos = state.todos + Todo(
+                    id = UUID.randomUUID().toString(),
+                    title = title,
+                    dueDateTime = dueDateTime,
+                    priority = priority,
+                    isDone = false
+                )
+            )
+        }
     }
 
     fun onTodoCheckedChange(id: String, isDone: Boolean) {

@@ -33,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.Room
 import com.example.todolist.R
 import com.example.todolist.Util.toDateString
+import com.example.todolist.data.local.TodoDatabase
+import com.example.todolist.data.local.TodoRepository
 import com.example.todolist.model.TodoState
 import com.example.todolist.ui.components.CollapsedPeekContent
 import com.example.todolist.ui.components.FilterComponent
@@ -59,8 +63,15 @@ import java.time.LocalDate
 @Composable
 fun TodoListScreen(
     modifier: Modifier = Modifier,
-    viewModel: TodoListViewModel = viewModel()
 ) {
+
+    val context = LocalContext.current
+    val repository = remember {
+        val db = Room.databaseBuilder(context.applicationContext, TodoDatabase::class.java, "todo.db").build()
+        TodoRepository(db.todoDao())
+    }
+    val viewModel: TodoListViewModel = viewModel(factory = TodoListViewModelFactory(repository))
+
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val localDate = LocalDate.now();
     val snackbarHostState = remember { SnackbarHostState() }

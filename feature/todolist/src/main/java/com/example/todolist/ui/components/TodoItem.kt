@@ -2,7 +2,6 @@ package com.example.todolist.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.MutatePriority
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,11 +18,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
@@ -43,13 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.todolist.Util.toColor
 import com.example.todolist.Util.toDisplayString
-import com.example.todolist.Util.toTimeString
 import com.example.todolist.model.Priority
 import com.example.todolist.ui.theme.MyAndroidPlaygroundTheme
 import com.example.todolist.ui.theme.item_bg
 import com.example.todolist.ui.theme.sub_title_color
 import com.example.todolist.ui.theme.title_color
-import java.time.LocalDate
+import kotlinx.coroutines.Job
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,6 +56,7 @@ fun TodoItem(
     isDone: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     onDelete: () -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -108,7 +104,8 @@ fun TodoItem(
 //            .background(item_bg)  //surface는 color속성으로 배경 색상 변경
             ,
             shape = RoundedCornerShape(16.dp),
-            color = item_bg
+            color = item_bg,
+            onClick = onClick
         ) {
             Row(
                 modifier = modifier
@@ -166,19 +163,21 @@ fun TodoItemPreview() {
         Column {
             TodoItem(
                 title = "장보기",
-                priority = Priority.HIGH,
                 dueDateTime = LocalDateTime.now(),
+                priority = Priority.HIGH,
                 isDone = false,
                 onCheckedChange = {},
-                onDelete = {}
+                onDelete = {},
+                onClick = {}
             )
             TodoItem(
                 title = "운동하기",
-                priority = Priority.MEDIUM,
                 dueDateTime = LocalDateTime.now(),
+                priority = Priority.MEDIUM,
                 isDone = true,
                 onCheckedChange = {},
-                onDelete = {}
+                onDelete = {},
+                onClick = {}
             )
         }
     }

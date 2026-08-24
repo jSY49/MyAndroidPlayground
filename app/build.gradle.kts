@@ -63,5 +63,6 @@ dependencies {
 
     //모듈 추가
     implementation(project(":feature:todolist"))
+    implementation(project(":feature:apod"))
 
 }

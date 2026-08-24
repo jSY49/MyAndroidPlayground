@@ -27,3 +27,4 @@ include(":app")
 // settings.gradle.kts
 include(":feature:todolist")
 project(":feature:todolist").projectDir = file("feature/todolist")
+include(":feature:apod")

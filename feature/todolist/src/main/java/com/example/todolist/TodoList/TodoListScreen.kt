@@ -1,10 +1,5 @@
 package com.example.todolist.TodoList
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
@@ -28,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -46,6 +42,7 @@ import com.example.todolist.R
 import com.example.todolist.Util.toDateString
 import com.example.todolist.data.local.TodoDatabase
 import com.example.todolist.data.local.TodoRepository
+import com.example.todolist.model.Todo
 import com.example.todolist.model.TodoState
 import com.example.todolist.ui.components.CollapsedPeekContent
 import com.example.todolist.ui.components.FilterComponent
@@ -79,6 +76,8 @@ fun TodoListScreen(
 
     val scaffoldState = rememberBottomSheetScaffoldState()
 
+    var editingTodo by remember { mutableStateOf<Todo?>(null) }
+
     BottomSheetScaffold (
         snackbarHost = { SnackbarHost(snackbarHostState) },
         scaffoldState = scaffoldState,
@@ -98,8 +97,11 @@ fun TodoListScreen(
 
             CollapsedPeekContent()
             TodoAddBottomSheet(
-                onAddTodo = { title, dueDateTime, priority ->
-                    viewModel.addTodo(title, dueDateTime, priority)
+                editingTodo = editingTodo,
+                onSubmit = { title, dueDateTime, priority ->
+                    editingTodo?.let { viewModel.updateTodo(it.id, title, dueDateTime, priority) }
+                        ?: viewModel.addTodo(title, dueDateTime, priority)
+                    editingTodo = null
                     scope.launch { scaffoldState.bottomSheetState.partialExpand() }
                 }
             )
@@ -167,6 +169,10 @@ fun TodoListScreen(
                                         viewModel.undoDelete()
                                     }
                                 }
+                            },
+                            onClick = {
+                                editingTodo = todo
+                                scope.launch { scaffoldState.bottomSheetState.expand() }
                             }
                         )
                     }

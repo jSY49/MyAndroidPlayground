@@ -41,6 +41,7 @@ import com.example.todolist.R
 import com.example.todolist.Util.toColor
 import com.example.todolist.Util.toDisplayString
 import com.example.todolist.model.Priority
+import com.example.todolist.model.Todo
 import com.example.todolist.ui.theme.MyAndroidPlaygroundTheme
 import com.example.todolist.ui.theme.sub_title_color
 import com.example.todolist.ui.theme.title_color
@@ -52,7 +53,8 @@ import java.time.ZoneId
 @Composable
 fun TodoAddBottomSheet(
     modifier: Modifier = Modifier,
-    onAddTodo: (title: String, dueDateTime: LocalDateTime, priority: Priority) -> Unit = { _, _, _ -> },
+    editingTodo: Todo? = null,
+    onSubmit: (title: String, dueDateTime: LocalDateTime, priority: Priority) -> Unit = { _, _, _ -> },
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -64,15 +66,21 @@ fun TodoAddBottomSheet(
     }
 
     // 1. 할 일 제목
-    var title by remember { mutableStateOf("") }
+    var title by remember(editingTodo?.id) { mutableStateOf(editingTodo?.title ?: "") }
 
     // 2. 마감 시간
-    var dueDateTime by remember { mutableStateOf(LocalDateTime.now().withHour(18).withMinute(0)) }
+    var dueDateTime by remember(editingTodo?.id) {
+        mutableStateOf(editingTodo?.dueDateTime ?: LocalDateTime.now().withHour(18).withMinute(0))
+    }
     var showDatePicker by remember { mutableStateOf(false) }
     var showTimePicker by remember { mutableStateOf(false) }
 
     // 3. 우선순위
-    var priority by remember { mutableStateOf(Priority.MEDIUM) }
+    var priority by remember(editingTodo?.id) {
+        mutableStateOf(
+            editingTodo?.priority ?: Priority.MEDIUM
+        )
+    }
 
     Surface(
         modifier = modifier
@@ -161,7 +169,7 @@ fun TodoAddBottomSheet(
                         .fillMaxWidth()
                         .clickable(enabled = isTitleValid) {
                             dismissKeyboard()
-                            onAddTodo(title.trim(), dueDateTime, priority)
+                            onSubmit(title.trim(), dueDateTime, priority)
                             title = ""
                             dueDateTime = LocalDateTime.now().withHour(18).withMinute(0)
                             priority = Priority.MEDIUM
@@ -176,7 +184,8 @@ fun TodoAddBottomSheet(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = stringResource(R.string.todolist_add_item_add),
+                            text = if (editingTodo != null) stringResource(R.string.todolist_add_item_edit)
+                            else stringResource(R.string.todolist_add_item_add),
                             color = if (isTitleValid) Color.Black else sub_title_color,
                             fontWeight = FontWeight.Bold
                         )

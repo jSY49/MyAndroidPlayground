@@ -61,6 +61,13 @@ class TodoListViewModel(
         }
     }
 
+    fun updateTodo(id: String, title: String, dueDateTime: LocalDateTime, priority: Priority) {
+        val todo = _uiState.value.todos.find { it.id == id } ?: return
+        viewModelScope.launch {
+            repository.updateTodo(todo.copy(title = title, dueDateTime = dueDateTime, priority = priority))
+        }
+    }
+
     private var lastDeletedTodo: Todo? = null
 
     fun onDelete(id: String) {
@@ -80,5 +87,6 @@ class TodoListViewModel(
         }
         lastDeletedTodo = null
     }
+
 
 }

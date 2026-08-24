@@ -6,4 +6,5 @@
     <string name="todolist_add_item_endDate">마감시간</string>
     <string name="todolist_add_item_priority">우선순위</string>
     <string name="todolist_add_item_add">추가하기</string>
+    <string name="todolist_add_item_edit">수정하기</string>
 </resources>

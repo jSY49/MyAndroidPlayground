@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyAndroidPlaygroundTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TodoAppNavHost(
+                    AppNavHost(
                         modifier = Modifier.padding(innerPadding)   // 여기 한 번만
                     )
                 }
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 fun GreetingPreview() {
     MyAndroidPlaygroundTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            TodoAppNavHost(
+            AppNavHost(
                 modifier = Modifier.padding(innerPadding)   // 여기 한 번만
             )
         }

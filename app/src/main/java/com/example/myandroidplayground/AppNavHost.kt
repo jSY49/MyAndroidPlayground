@@ -1,16 +1,15 @@
 package com.example.myandroidplayground
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apod.Screen.MyNasaExplorerApp
 import com.example.todolist.TodoList.TodoListScreen
 
 @Composable
-fun TodoAppNavHost(modifier: Modifier = Modifier) {
+fun AppNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(
@@ -20,11 +19,14 @@ fun TodoAppNavHost(modifier: Modifier = Modifier) {
     ) {
         composable("home") {
             NaviButtons(
-                onTodoListClick = { navController.navigate("todoList") }
+                onNavigate = { route -> navController.navigate(route) }
             )
         }
         composable("todoList") {
             TodoListScreen()
+        }
+        composable("apod") {
+            MyNasaExplorerApp()
         }
     }
 }

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NaviButtons(modifier : Modifier = Modifier,
-                onTodoListClick: () -> Unit
+                onNavigate: (String) -> Unit
 ) {
 
     Surface(
@@ -37,8 +37,16 @@ fun NaviButtons(modifier : Modifier = Modifier,
                 Button(
                     modifier = buttonModifier,
                     colors = buttonColor,
-                    onClick = onTodoListClick
+                    onClick = { onNavigate("todoList") }
                 ) { Text("TODO") }
+            }
+
+            item {
+                Button(
+                    modifier = buttonModifier,
+                    colors = buttonColor,
+                    onClick = { onNavigate("apod") }
+                ) { Text("NASA") }
             }
         }
     }

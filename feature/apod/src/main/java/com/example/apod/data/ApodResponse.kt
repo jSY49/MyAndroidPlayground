@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ApodResponse(
-    val copyright: String,
+    val copyright: String? = "",
     val date: String,
     val explanation: String,
     val hdurl: String = "",

@@ -5,7 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.apod.Screen.MyNasaExplorerApp
+import com.example.apod.ui.Screen.MyNasaExplorerApp
 import com.example.todolist.TodoList.TodoListScreen
 
 @Composable

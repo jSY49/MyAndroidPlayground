@@ -1,4 +1,4 @@
-package com.example.apod.Screen
+package com.example.apod.ui.Screen
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

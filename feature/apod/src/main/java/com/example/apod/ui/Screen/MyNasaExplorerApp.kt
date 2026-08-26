@@ -1,6 +1,5 @@
-package com.example.apod.Screen
+package com.example.apod.ui.Screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -14,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -23,7 +21,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.apod.Navigation.NasaDestination
 import com.example.apod.Navigation.bottomNavItems
-import com.example.apod.ui.theme.mainColor
 import com.example.apod.ui.theme.nav_bar
 import com.example.apod.ui.theme.selected_icon
 import com.example.apod.ui.theme.unselected_icon

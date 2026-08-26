@@ -1,12 +1,12 @@
-package com.example.apod.Screen
+package com.example.apod.ui.Screen
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ApodScreen() {
-    Text(text = "apod")
+fun IssScreen() {
+    Text("ISS")
 }
 
 @Preview(name = "Phone", device = "spec:width=360dp,height=800dp")
@@ -14,5 +14,5 @@ fun ApodScreen() {
 @Preview(name = "Tablet", device = "spec:width=1280dp,height=800dp")
 @Preview(name = "Foldable", device = "spec:width=673dp,height=841dp")
 @Composable
-fun ApodScreenPreview() {
+fun IssScreenPreview() {
 }

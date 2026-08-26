@@ -25,12 +25,12 @@ class ApodViewModel : ViewModel() {
             _uiState.value = ApodUiState.Loading
 
             try {
-                android.util.Log.d("ApodVM", "요청 시작")
+//                android.util.Log.d("ApodVM", "요청 시작")
                 val result = RetrofitInstance.api.getApod(apiKey = BuildConfig.NASA_API_KEY)
-                android.util.Log.d("ApodVM", "성공: $result")
+//                android.util.Log.d("ApodVM", "성공: $result")
                 _uiState.value = ApodUiState.Success(result)
             } catch (e: Exception) {
-                android.util.Log.e("ApodVM", "실패", e)
+//                android.util.Log.e("ApodVM", "실패", e)
                 _uiState.value = ApodUiState.Error(e.message ?: "알 수 없는 오류")
             }
         }

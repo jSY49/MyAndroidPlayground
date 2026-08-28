@@ -30,5 +30,17 @@ interface ApodApi {
     ]
     */
     @GET("planetary/apod")
-    suspend fun getApod(@Query("api_key") apiKey: String): ApodResponse
+    suspend fun getApodToday(): ApodResponse
+
+    @GET("planetary/apod")
+    suspend fun getApodByDate(
+        @Query("date") date: String
+    ): ApodResponse
+
+    @GET("planetary/apod")
+    suspend fun getApodByDateRange(
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String
+    ): List<ApodResponse>
+
 }

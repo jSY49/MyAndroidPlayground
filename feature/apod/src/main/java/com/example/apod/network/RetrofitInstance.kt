@@ -12,7 +12,7 @@ import retrofit2.create
 object RetrofitInstance {
 
     private val BASE_URL = "https://api.nasa.gov/"
-    private val json = Json { ignoreUnknownKeys = true }    // 필드가 추가 되어도 crush 나지 않도록 안전 장치 추가
+    private val json = Json { ignoreUnknownKeys = true }    // 데이터 클래스에 없는 데이터있어도 crush 나지 않도록 안전 장치 추가
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level =
@@ -23,6 +23,7 @@ object RetrofitInstance {
     }
 
     private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(ApiKeyInterceptor(BuildConfig.NASA_API_KEY))
         .addInterceptor(loggingInterceptor)
         .build()
 

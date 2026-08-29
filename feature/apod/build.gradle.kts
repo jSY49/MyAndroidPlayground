@@ -56,5 +56,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    implementation(libs.coil.compose)
 
 }

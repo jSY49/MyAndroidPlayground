@@ -1,16 +1,19 @@
 package com.example.apod.ui.Screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -19,12 +22,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,8 +52,11 @@ import com.example.apod.R
 import com.example.apod.Util.toKoreanDateString
 import com.example.apod.ViewModel.ApodUiState
 import com.example.apod.ViewModel.ApodViewModel
+import com.example.apod.ui.Components.ApodActionButtons
+import com.example.apod.ui.Components.MediaTypeChips
 import com.example.apod.ui.theme.bg
 import com.example.apod.ui.theme.grayborder
+import com.example.apod.ui.theme.mainColor
 import com.example.apod.ui.theme.sub_title_color
 import com.example.apod.ui.theme.title_color
 
@@ -83,6 +93,7 @@ fun ApodScreen(modifier: Modifier = Modifier, viewModel: ApodViewModel = viewMod
             val items = (state as? ApodUiState.Success)?.data ?: emptyList()
             val pagerState = rememberPagerState(pageCount = { items.size })
             val currentItem = items.getOrNull(pagerState.currentPage)
+            var isOverflowing by remember { mutableStateOf(false) }
 
             Row(
                 modifier = modifier.padding(
@@ -147,7 +158,7 @@ fun ApodScreen(modifier: Modifier = Modifier, viewModel: ApodViewModel = viewMod
                             .height(240.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        CircularProgressIndicator()
+                        CircularProgressIndicator(color = mainColor)
                     }
                 }
 
@@ -182,7 +193,7 @@ fun ApodScreen(modifier: Modifier = Modifier, viewModel: ApodViewModel = viewMod
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp),
+                            .padding(vertical = 16.dp),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         repeat(items.size) { index ->
@@ -197,14 +208,66 @@ fun ApodScreen(modifier: Modifier = Modifier, viewModel: ApodViewModel = viewMod
                         }
                     }
 
+                    currentItem?.mediaType?.let { mediaType ->
+                        MediaTypeChips(mediaType)
+                    }
+
+                    Text(
+                        text = currentItem?.title ?: "",
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        color = title_color,
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(top = 8.dp)
+                            .basicMarquee()
+                    )
+
                     Text(
                         text = currentItem?.explanation ?: "",
-                        maxLines = 3,
+                        maxLines = 4,
                         overflow = TextOverflow.Ellipsis,
                         color = sub_title_color,
                         fontSize = 14.sp,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 8.dp),
+                        onTextLayout = { res ->
+                            isOverflowing = res.hasVisualOverflow
+                        }
                     )
+
+                    if (isOverflowing) {
+                        Text(
+                            text = stringResource(R.string.more),
+                            color = mainColor,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+
+                    HorizontalDivider(
+                        modifier = Modifier.padding(horizontal = 0.dp, vertical = 8.dp),
+                        thickness = 1.dp,
+                        color = Color.Gray
+                    )
+
+                    Row(
+                        modifier = Modifier.padding(vertical = 16.dp)
+                    ) {
+
+                        ApodActionButtons(
+                            modifier = Modifier.weight(1f),
+                            label = stringResource(R.string.save),
+                            onClick = {}
+                        )
+                        Spacer(modifier = Modifier.size(8.dp))
+                        ApodActionButtons(
+                            modifier = Modifier.weight(1f),
+                            label = stringResource(R.string.share),
+                            onClick = {}
+                        )
+                    }
                 }
             }
 
